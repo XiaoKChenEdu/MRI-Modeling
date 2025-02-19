@@ -1,0 +1,6 @@
+.vscode/
+img/*
+input/*
+output/*
+output_stl/*
+raw_data/
