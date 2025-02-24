@@ -203,16 +203,19 @@ def visualize_skin_bone_heart_lung(volume_path, heart, lung):
 
     plt.show(interactive=True)  
 
-def save_mesh_to_stl(mesh, name):
+def save_mesh_to_stl(mesh, name, decimation_factor):
     """
-    Save a mesh to STL file
+    Save a mesh to STL file with decimation
     Args:
         mesh: vedo mesh object
-        filename: output filename (without extension)
+        name: output filename (without extension)
+        decimation_factor: factor to reduce the number of triangles (0-1)
     """
-    mesh.write(f'{name}.stl')
+    # Decimate the mesh to reduce polygon count
+    decimated_mesh = mesh.decimate(decimation_factor)
+    decimated_mesh.write(f'{name}.stl')
 
-def export_stl(volume_path, heart, lung, output_dir):
+def export_stl(filename, volume_path, heart, lung, output_dir, decimation_factor=1,):
     """
     Create and export 3D meshes of the body outline, bones, heart, and lungs as STL files
     Args:
@@ -220,6 +223,7 @@ def export_stl(volume_path, heart, lung, output_dir):
         heart: path to the heart segmentation .nii.gz file
         lung: path to the lung segmentation .nii.gz file
         output_dir: directory to save STL files
+        decimation_factor: factor to reduce the number of triangles (0-1)
     """
     # Load the volumes
     skin_img = nib.load(volume_path)
@@ -244,7 +248,7 @@ def export_stl(volume_path, heart, lung, output_dir):
     heart_mesh = heart_vol.isosurface(0.5)
     lung_mesh = lung_vol.isosurface(0.5)
     
-    # Apply smoothing
+    # Apply smoothing and decimation
     skin_mesh.smooth(niter=20)
     bone_mesh.smooth(niter=20)
     heart_mesh.smooth(niter=20)
@@ -258,24 +262,33 @@ def export_stl(volume_path, heart, lung, output_dir):
     os.makedirs(f'{output_dir}/{filename}', exist_ok=True)
     combined_mesh = merge([skin_mesh, bone_mesh, heart_mesh, lung_mesh])
     combined_mesh_no_bone = merge([skin_mesh, heart_mesh, lung_mesh])
-    save_mesh_to_stl(skin_mesh, f'{output_dir}/{filename}/{filename}_skin')
-    save_mesh_to_stl(bone_mesh, f'{output_dir}/{filename}/{filename}_bone')
-    save_mesh_to_stl(heart_mesh, f'{output_dir}/{filename}/{filename}_heart')
-    save_mesh_to_stl(lung_mesh, f'{output_dir}/{filename}/{filename}_lung')
-    save_mesh_to_stl(combined_mesh_no_bone, f'{output_dir}/{filename}/{filename}_combined_no_bone')
-    save_mesh_to_stl(combined_mesh, f'{output_dir}/{filename}/{filename}_combined')
+    save_mesh_to_stl(skin_mesh, f'{output_dir}/{filename}/{filename}_skin', decimation_factor)
+    save_mesh_to_stl(bone_mesh, f'{output_dir}/{filename}/{filename}_bone', decimation_factor)
+    save_mesh_to_stl(heart_mesh, f'{output_dir}/{filename}/{filename}_heart', decimation_factor)
+    save_mesh_to_stl(lung_mesh, f'{output_dir}/{filename}/{filename}_lung', decimation_factor)
+    save_mesh_to_stl(combined_mesh_no_bone, f'{output_dir}/{filename}/{filename}_combined_no_bone', decimation_factor)
+    save_mesh_to_stl(combined_mesh, f'{output_dir}/{filename}/{filename}_combined', decimation_factor)
     
     print(f"STL files have been saved to {output_dir}/{filename}")
 
 if __name__ == "__main__":
-    filename = "volume_90"
-    volume_path = f"input/volumes/{filename}.nii.gz"
-    heart = f"output/{filename}/{filename}_Heart.nii.gz"
-    lung = f"output/{filename}/{filename}_Auto_Lung.nii.gz"
+    # filename = "volume_12"
+    # volume_path = f"input/volumes/{filename}.nii.gz"
+    # heart = f"output/{filename}/{filename}_Heart.nii.gz"
+    # lung = f"output/{filename}/{filename}_Auto_Lung.nii.gz"
 
     # visualize_skin(volume_path)
     # visualize_bone(volume_path)
     # visualize_heart_lung(heart, lung)
     # visualize_skin_heart_lung(volume_path, heart, lung)
-    visualize_skin_bone_heart_lung(volume_path, heart, lung)
-    # export_stl(volume_path, heart, lung, output_dir='./output_stl')
+    # visualize_skin_bone_heart_lung(volume_path, heart, lung)
+    # export_stl(filename, volume_path, heart, lung, output_dir='./output_stl')
+
+    for i in [15, 18]:
+        filename = f'volume_{i}'
+        volume_path = f"input/volumes/{filename}.nii.gz"
+        heart = f"output/{filename}/{filename}_Heart.nii.gz"
+        lung = f"output/{filename}/{filename}_Auto_Lung.nii.gz"
+        export_stl(f'{filename}_reduce_50%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.50)
+        export_stl(f'{filename}_reduce_25%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.25)
+        export_stl(f'{filename}_reduce_99%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.01)
