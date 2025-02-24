@@ -4,5 +4,7 @@ input/*
 output/*
 output_stl/*
 raw_data/
+/__pycache__/*
+*/__pycache__/*
 
 test.py

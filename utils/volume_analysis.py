@@ -1,6 +1,5 @@
 import nibabel as nib
 import numpy as np
-from vedo import Volume, Text2D, Plotter
 
 def calculate_volume(nifti_file):
     """Calculate the volume of a structure from a NIFTI file"""
@@ -15,8 +14,8 @@ def compare_volumes(volume_numbers):
     
     for vol_num in volume_numbers:
         filename = f"volume_{vol_num}"
-        heart_file = f"./output/{filename}/{filename}_Heart.nii.gz"
-        lung_file = f"./output/{filename}/{filename}_Auto_Lung.nii.gz"
+        heart_file = f"../output/{filename}/{filename}_Heart.nii.gz"
+        lung_file = f"../output/{filename}/{filename}_Auto_Lung.nii.gz"
         
         heart_volume = calculate_volume(heart_file)
         lung_volume = calculate_volume(lung_file)

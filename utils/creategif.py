@@ -10,8 +10,8 @@ def create_mri_3d_gif():
     frames = []
     for i in range(12, 19):
         filename = f"volume_{i}"
-        path_nifti_heart = f"./output/{filename}/{filename}_Heart.nii.gz"
-        path_nifti_lung = f"./output/{filename}/{filename}_Auto_Lung.nii.gz"
+        path_nifti_heart = f"../output/{filename}/{filename}_Heart.nii.gz"
+        path_nifti_lung = f"../output/{filename}/{filename}_Auto_Lung.nii.gz"
         
         mri_files = [path_nifti_heart, path_nifti_lung]
         volumes = []
@@ -30,20 +30,20 @@ def create_mri_3d_gif():
         plt = Plotter(offscreen=True, axes=1)
         txt = Text2D(f"Volume {i}", pos='top-middle', s=1.5, c='white', bg='black', alpha=0.7)
         plt.show(volumes + [txt], bg='black', interactive=False, elevation=-90)
-        plt.screenshot(f'img/frame_{i:03d}.png')
+        plt.screenshot(f'../img/frame_{i:03d}.png')
         plt.clear()
         volumes.clear()
     
     # Create GIF from the saved frames
     
     frames = []
-    for filename in sorted(glob.glob('img/frame_*.png')):
+    for filename in sorted(glob.glob('../img/frame_*.png')):
         frames.append(imageio.imread(filename))
     
-    imageio.mimsave('img/mri_visualization.gif', frames, duration=1000, loop=0)
+    imageio.mimsave('../img/mri_visualization.gif', frames, duration=1000, loop=0)
     
     # Clean up temporary files
-    for filename in glob.glob('img/frame_*.png'):
+    for filename in glob.glob('../img/frame_*.png'):
         os.remove(filename)
 
 if __name__ == "__main__":

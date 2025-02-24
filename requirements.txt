@@ -1,0 +1,8 @@
+numpy==1.24.3
+nibabel==5.1.0
+vedo==2023.4.6
+matplotlib==3.7.1
+PyQt5==5.15.9
+imageio==2.31.1
+Pillow==9.5.0
+vtk==9.2.6

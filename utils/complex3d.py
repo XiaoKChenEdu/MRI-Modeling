@@ -50,7 +50,7 @@ def print_info(mri_file, patient_name):
 if __name__ == "__main__":
 
     filename = "volume_0"
-    folder_path = f"./output/{filename}"
+    folder_path = f"../output/{filename}"
     mri_files = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if f.endswith('.nii.gz') and f.startswith(filename)]
     
     colors = COLORS_20[:len(mri_files)]
