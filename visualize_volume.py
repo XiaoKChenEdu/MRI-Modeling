@@ -272,23 +272,23 @@ def export_stl(filename, volume_path, heart, lung, output_dir, decimation_factor
     print(f"STL files have been saved to {output_dir}/{filename}")
 
 if __name__ == "__main__":
-    # filename = "volume_12"
-    # volume_path = f"input/volumes/{filename}.nii.gz"
-    # heart = f"output/{filename}/{filename}_Heart.nii.gz"
-    # lung = f"output/{filename}/{filename}_Auto_Lung.nii.gz"
+    filename = "volume_12"
+    volume_path = f"input/volumes/{filename}.nii.gz"
+    heart = f"output/{filename}/{filename}_Heart.nii.gz"
+    lung = f"output/{filename}/{filename}_Auto_Lung.nii.gz"
 
     # visualize_skin(volume_path)
     # visualize_bone(volume_path)
     # visualize_heart_lung(heart, lung)
     # visualize_skin_heart_lung(volume_path, heart, lung)
-    # visualize_skin_bone_heart_lung(volume_path, heart, lung)
+    visualize_skin_bone_heart_lung(volume_path, heart, lung)
     # export_stl(filename, volume_path, heart, lung, output_dir='./output_stl')
 
-    for i in [15, 18]:
-        filename = f'volume_{i}'
-        volume_path = f"input/volumes/{filename}.nii.gz"
-        heart = f"output/{filename}/{filename}_Heart.nii.gz"
-        lung = f"output/{filename}/{filename}_Auto_Lung.nii.gz"
-        export_stl(f'{filename}_reduce_50%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.50)
-        export_stl(f'{filename}_reduce_25%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.25)
-        export_stl(f'{filename}_reduce_99%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.01)
+    # for i in [15, 18]:
+    #     filename = f'volume_{i}'
+    #     volume_path = f"input/volumes/{filename}.nii.gz"
+    #     heart = f"output/{filename}/{filename}_Heart.nii.gz"
+    #     lung = f"output/{filename}/{filename}_Auto_Lung.nii.gz"
+    #     export_stl(f'{filename}_reduce_50%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.50)
+    #     export_stl(f'{filename}_reduce_25%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.25)
+    #     export_stl(f'{filename}_reduce_99%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.01)
