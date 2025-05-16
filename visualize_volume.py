@@ -35,7 +35,6 @@ def visualize_skin(volume_path):
     # Show the visualization with default lighting
     plt.show(interactive=True)
     
-
 def visualize_bone(volume_path):
     """
     Create a 3D visualization of the body outline using Plotter
@@ -70,7 +69,6 @@ def visualize_bone(volume_path):
     # Show the visualization with default lighting
     plt.show(interactive=True)
     
-
 def visualize_heart_lung(heart_path, lung_path):
     """
     Create a 3D visualization of the heart and lungs
@@ -199,7 +197,7 @@ def visualize_skin_bone_heart_lung(volume_path, heart, lung):
     
     # Set camera
     plt.camera.Elevation(-90)
-    plt.camera.Azimuth(0)
+    plt.camera.Azimuth(90)
 
     plt.show(interactive=True)  
 
@@ -272,10 +270,21 @@ def export_stl(filename, volume_path, heart, lung, output_dir, decimation_factor
     print(f"STL files have been saved to {output_dir}/{filename}")
 
 if __name__ == "__main__":
-    filename = "volume_12"
+
+    filename = "volume_18"
     volume_path = f"input/volumes/{filename}.nii.gz"
     heart = f"output/{filename}/{filename}_Heart.nii.gz"
     lung = f"output/{filename}/{filename}_Auto_Lung.nii.gz"
+
+    # filename0 = "volume_18"
+    # volume_path = f"input/volumes/{filename0}.nii.gz"
+    # heart = f"output/{filename0}/{filename0}_Heart.nii.gz"
+    # lung = f"output/{filename0}/{filename0}_Auto_Lung.nii.gz"
+
+    # filename1 = "volume_12"
+    # volume_path = f"input/volumes/{filename1}.nii.gz"
+    # heart = f"output/{filename1}/{filename1}_Heart.nii.gz"
+    # lung = f"output/{filename1}/{filename1}_Auto_Lung.nii.gz"
 
     # visualize_skin(volume_path)
     # visualize_bone(volume_path)
@@ -284,11 +293,11 @@ if __name__ == "__main__":
     visualize_skin_bone_heart_lung(volume_path, heart, lung)
     # export_stl(filename, volume_path, heart, lung, output_dir='./output_stl')
 
-    # for i in [15, 18]:
+    # for i in [164]:
     #     filename = f'volume_{i}'
     #     volume_path = f"input/volumes/{filename}.nii.gz"
     #     heart = f"output/{filename}/{filename}_Heart.nii.gz"
     #     lung = f"output/{filename}/{filename}_Auto_Lung.nii.gz"
     #     export_stl(f'{filename}_reduce_50%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.50)
-    #     export_stl(f'{filename}_reduce_25%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.25)
+    #     export_stl(f'{filename}_reduce_75%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.25)
     #     export_stl(f'{filename}_reduce_99%', volume_path, heart, lung, output_dir='./output_stl', decimation_factor=0.01)

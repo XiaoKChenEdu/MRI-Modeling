@@ -2,7 +2,7 @@ from vedo import show, Volume
 import nibabel as nib
 import matplotlib.pyplot as plt
 
-def visualize_mri_3d(data, filename, slice=0, timeseries=True, bg='black'):
+def visualize_mri_3d(data, filename, slice=0, timeseries=True, bg='white'):
     """
     Visualize 3D MRI data using interactive volume rendering.
     This function creates a 3D visualization of MRI data using the Volume renderer.
@@ -23,7 +23,7 @@ def visualize_mri_3d(data, filename, slice=0, timeseries=True, bg='black'):
     """
     if len(data.shape) == 3:
         title = f'{filename}'
-        vol = Volume(data)
+        vol = Volume(data, spacing=xyzspacing)
     else:
         if timeseries is False:
             timepoint = int(input(f"Enter the timepoint (0-{data.shape[3]-1}): "))
@@ -31,10 +31,10 @@ def visualize_mri_3d(data, filename, slice=0, timeseries=True, bg='black'):
                 print(f"Invalid timepoint. Please enter a number between 0 and {data.shape[3]-1}")
                 timepoint = input(f"Enter the timepoint (0-{data.shape[3]-1}): ")
             title = f'{filename} All Slice at Time {timepoint}'
-            vol = Volume(data[:,:,:,timepoint])
+            vol = Volume(data[:,:,:,timepoint], spacing=(1,1,3))
         else:
             title = f'{filename} Slice {slice}'
-            vol = Volume(data[:,:,slice,:])
+            vol = Volume(data[:,:,slice,:], spacing=(1,1,3))
     
     show(vol, bg=bg, title=title)
 
@@ -136,6 +136,7 @@ if __name__ == "__main__":
     
     img = nib.load(path_nifti)
     data = img.get_fdata()
+    xyzspacing = img.header.get_zooms()
     
     if len(data.shape) == 4:
         timeseries = False if input("View by time series (y/n)? ").lower() == 'n' else True
